@@ -31,7 +31,7 @@ export const Register = () => {
         gap={4}
         onSubmit={handleSubmit(handleRegister)}
       >
-        <Heading>Moto Dash</Heading>
+        <Heading textAlign='center'>Cadastrar</Heading>
         <Stack spacing="4">
         <Input
             type="name"
