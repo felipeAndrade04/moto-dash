@@ -1,16 +1,27 @@
 import React from 'react'
 import { Button, Flex, Heading, Stack } from '@chakra-ui/react'
-import { useForm } from 'react-hook-form';
+import { SubmitHandler, useForm } from 'react-hook-form';
 import { yupResolver } from '@hookform/resolvers/yup'
 import { LoginData, loginSchema } from '.';
 import { Input } from '../../components/Form/Input';
+import { useAuth } from '../../hooks';
+import { useNavigate } from 'react-router-dom';
 
 export const Login = () => {
-  const { register, handleSubmit, formState: { errors, isSubmitting } } = useForm<LoginData>({
+  const { register, handleSubmit, formState: { errors } } = useForm<LoginData>({
     resolver: yupResolver(loginSchema),
   });
+  const navigate = useNavigate()
 
-  const handleLogin = () => { }
+  const { isLoading, login } = useAuth()
+
+  const handleLogin: SubmitHandler<LoginData> = async (values) => {
+    await login(values)
+  }
+
+  const handleNavigateRegister = () => {
+    navigate('/cadastro')
+  }
 
   return (
     <Flex
@@ -45,8 +56,18 @@ export const Login = () => {
             error={errors.password}
             {...register('password')}
           />
+
         </Stack>
-        <Button type="submit" mt="6" colorScheme="orange" size="lg" isLoading={isSubmitting}>Entrar</Button>
+        <Button
+          colorScheme="blue"
+          variant='link'
+          onClick={handleNavigateRegister}
+          width="100px"
+          marginLeft={'auto'}
+        >
+          Criar conta
+        </Button>
+        <Button type="submit" mt="6" colorScheme="blue" size="lg" isLoading={isLoading}>Entrar</Button>
       </Flex>
     </Flex>
   )

@@ -1,16 +1,29 @@
 import React from 'react'
 import { Button, Flex, Heading, Stack } from '@chakra-ui/react'
-import { useForm } from 'react-hook-form';
+import { SubmitHandler, useForm } from 'react-hook-form';
 import { yupResolver } from '@hookform/resolvers/yup'
 import { RegisterData, registerSchema } from './';
 import { Input } from '../../components/Form/Input';
+import { useAuth } from '../../hooks';
+import { useNavigate } from 'react-router-dom';
 
 export const Register = () => {
-  const { register, handleSubmit, formState: { errors, isSubmitting } } = useForm<RegisterData>({
+  const { register: registerForm, handleSubmit, formState: { errors } } = useForm<RegisterData>({
     resolver: yupResolver(registerSchema),
   });
+  const navigate = useNavigate()
 
-  const handleRegister = () => { }
+  const { isLoading, register } = useAuth()
+
+  const handleRegister: SubmitHandler<RegisterData> = async (values) => {
+    register(values).then(() => {
+      handleGoBack()
+    })
+  }
+
+  const handleGoBack = () => {
+    navigate(-1)
+  }
 
   return (
     <Flex
@@ -33,38 +46,46 @@ export const Register = () => {
       >
         <Heading textAlign='center'>Cadastrar</Heading>
         <Stack spacing="4">
-        <Input
+          <Input
             type="name"
             label="Nome"
             error={errors.name}
-            {...register('name')}
+            {...registerForm('name')}
           />
           <Input
             type="email"
             label="E-mail"
             error={errors.email}
-            {...register('email')}
+            {...registerForm('email')}
           />
           <Input
             type="password"
             label="Senha"
             error={errors.password}
-            {...register('password')}
+            {...registerForm('password')}
           />
           <Input
-            type="confirmPassword"
+            type="password"
             label="Confirmação de senha"
             error={errors.confirmPassword}
-            {...register('confirmPassword')}
+            {...registerForm('confirmPassword')}
           />
           <Input
             type="token"
             label="Token"
             error={errors.token}
-            {...register('token')}
+            {...registerForm('token')}
           />
         </Stack>
-        <Button type="submit" mt="6" colorScheme="orange" size="lg" isLoading={isSubmitting}>Enviar</Button>
+        <Button
+          type="submit"
+          mt="6"
+          colorScheme="blue"
+          size="lg"
+          isLoading={isLoading}
+        >
+          Enviar
+        </Button>
       </Flex>
     </Flex>
   )
