@@ -25,7 +25,6 @@ const authService = (auth: Auth) => ({
       await updateProfile(response.user, { displayName: name });
     } catch (error) {
       if (error instanceof FirebaseError) {
-        console.log(error)
         let errorMessage = "Algum erro aconteceu, tente novamente mais tarde";
 
         if (error.code === "auth/email-already-in-use") {

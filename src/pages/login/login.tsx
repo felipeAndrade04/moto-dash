@@ -3,7 +3,7 @@ import { Button, Flex, Heading, Stack } from '@chakra-ui/react'
 import { SubmitHandler, useForm } from 'react-hook-form';
 import { yupResolver } from '@hookform/resolvers/yup'
 import { LoginData, loginSchema } from '.';
-import { Input } from '../../components/Form/Input';
+import { Input } from '../../components';
 import { useAuth } from '../../hooks';
 import { useNavigate } from 'react-router-dom';
 

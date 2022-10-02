@@ -1,16 +1,28 @@
-import React from 'react';
+import React, { useEffect } from 'react';
 import { ChakraProvider } from '@chakra-ui/react'
 
 import { theme } from './styles/theme';
-import { BrowserRouter } from 'react-router-dom';
+import { useNavigate } from 'react-router-dom';
 import { Routes } from './routes';
+import { useAuth } from './hooks';
 
 function App() {
+  const navigate = useNavigate()
+  const { user } = useAuth()
+
+  useEffect(() => {
+    let route = '/login'
+
+    if (user) {
+      route = '/'
+    }
+
+    navigate(route)
+  }, [user, navigate])
+
   return (
     <ChakraProvider theme={theme}>
-      <BrowserRouter>
-        <Routes />
-      </BrowserRouter>
+      <Routes />
     </ChakraProvider>
   );
 }

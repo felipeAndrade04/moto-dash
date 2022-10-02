@@ -2,22 +2,19 @@ import { useEffect, useState } from "react";
 import { useToast } from "@chakra-ui/react";
 import { LoginData, RegisterData } from "../pages";
 import services, { auth } from "../services";
-import { onAuthStateChanged } from "firebase/auth";
-import { useNavigate } from "react-router-dom";
+import { onAuthStateChanged, User } from "firebase/auth";
 
 export const useAuth = () => {
   const [isLoading, setIsLoading] = useState(false);
+  const [user, setUser] = useState<User | null>();
 
   const toast = useToast({ position: "top" });
-  const navigate = useNavigate()
 
   useEffect(() => {
     onAuthStateChanged(auth, (user) => {
-      if (user) {
-        navigate('/')
-      }
+      setUser(user);
     });
-  }, [navigate])
+  }, []);
 
   const register = async (data: RegisterData) => {
     try {
@@ -26,7 +23,7 @@ export const useAuth = () => {
       await services.auth.register(data);
 
       toast({
-        title: 'Conta criada com sucesso',
+        title: "Conta criada com sucesso",
         status: "error",
         isClosable: true,
       });
@@ -81,5 +78,6 @@ export const useAuth = () => {
     login,
     logout,
     isLoading,
+    user,
   };
 };

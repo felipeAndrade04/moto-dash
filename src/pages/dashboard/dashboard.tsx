@@ -1,10 +1,11 @@
-import { Flex, Text } from "@chakra-ui/react";
+import { Text } from "@chakra-ui/react";
 import React from "react";
+import { PageLayout } from "../../components";
 
 export const Dashboard = () => {
   return (
-    <Flex>
+    <PageLayout>
       <Text>Dashboard</Text>
-    </Flex>
+    </PageLayout>
   )
 }
