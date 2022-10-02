@@ -19,7 +19,7 @@ export function Profile({
         </Box>
       )}
 
-      <Avatar size="md" name={name} src={Logo} borderWidth={1} borderColor="orange.400" />
+      <Avatar size="md" name={name} src={Logo} borderWidth={2} borderColor="blue.400" />
     </Flex>
   );
 }
