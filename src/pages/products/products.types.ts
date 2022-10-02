@@ -3,7 +3,7 @@ export interface Product {
   created_at: Date
   name: string;
   description: string;
-  stock: string;
+  stock: number;
   price: number;
   brand: string;
   model?: string;
