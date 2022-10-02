@@ -18,7 +18,7 @@ function App() {
     }
 
     navigate(route)
-  }, [user, navigate])
+  }, [user])
 
   return (
     <ChakraProvider theme={theme}>
