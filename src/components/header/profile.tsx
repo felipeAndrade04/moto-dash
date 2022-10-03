@@ -13,7 +13,7 @@ export function Profile({
       {showProfileData && (
         <Box mr="4" textAlign="right">
           <Text>{name}</Text>
-          <Text color="gray.300" fontSize="small">
+          <Text color="gray.500" fontSize="small">
             {email}
           </Text>
         </Box>

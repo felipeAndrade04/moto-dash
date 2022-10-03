@@ -4,6 +4,7 @@ import { getFirestore } from "firebase/firestore";
 
 import { firebaseConfig } from "../config";
 import authService from "./auth";
+import orderService from "./order";
 import productService from "./product";
 
 const app = initializeApp(firebaseConfig);
@@ -13,7 +14,8 @@ const db = getFirestore(app);
 
 const services = {
   auth: authService(auth),
-  product: productService(db)
+  product: productService(db),
+  order: orderService(db)
 };
 
 export default services;
