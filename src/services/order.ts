@@ -1,4 +1,12 @@
-import { addDoc, collection, deleteDoc, doc, Firestore, getDocs, query, updateDoc } from "firebase/firestore";
+import {
+  addDoc,
+  collection,
+  deleteDoc,
+  doc,
+  Firestore,
+  getDocs,
+  query,
+} from "firebase/firestore";
 import { Order } from "../pages";
 
 const orderService = (db: Firestore) => ({
@@ -15,7 +23,7 @@ const orderService = (db: Firestore) => ({
           id: doc.id,
           created_at: doc.data().created_at,
           products: doc.data().products,
-          totalValue: doc.data().totalValue
+          totalValue: doc.data().totalValue,
         });
       });
 
@@ -27,34 +35,18 @@ const orderService = (db: Firestore) => ({
   create: async (orderData: Omit<Order, "id" | "created_at">) => {
     try {
       const newOrder: Omit<Order, "id"> = {
+        ...orderData,
         created_at: new Date(),
-        ...orderData
-      }
+      };
 
-      const docRef = await addDoc(collection(db, 'order'), newOrder)
+      const docRef = await addDoc(collection(db, "order"), newOrder);
 
       const order: Order = {
         id: docRef.id,
-        ...newOrder
-      }
+        ...newOrder,
+      };
 
-      return order
-    } catch (error) {
-      throw new Error("Algum erro aconteceu, tente novamente mais tarde");
-    }
-  },
-  update: async (orderId: string, data: Omit<Order, "id">) => {
-    try {
-      const docRef = doc(db, "order", orderId);
-
-      await updateDoc(docRef, data);
-
-      const updatedOrder: Order = {
-        id: orderId,
-        ...data
-      }
-
-      return updatedOrder;
+      return order;
     } catch (error) {
       throw new Error("Algum erro aconteceu, tente novamente mais tarde");
     }
@@ -68,6 +60,6 @@ const orderService = (db: Firestore) => ({
       throw new Error("Algum erro aconteceu, tente novamente mais tarde");
     }
   },
-})
+});
 
-export default orderService
+export default orderService;

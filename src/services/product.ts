@@ -40,16 +40,16 @@ const productService = (db: Firestore) => ({
   create: async (productData: Omit<Product, "id" | "created_at">) => {
     try {
       const newProduct: Omit<Product, "id"> = {
+        ...productData,
         created_at: new Date(),
-        ...productData
-      }
+      };
 
       const docRef = await addDoc(collection(db, "product"), newProduct);
 
       const product: Product = {
         id: docRef.id,
-        ...newProduct
-      }
+        ...newProduct,
+      };
 
       return product;
     } catch (error) {
@@ -64,8 +64,8 @@ const productService = (db: Firestore) => ({
 
       const updatedProduct: Product = {
         id: productId,
-        ...data
-      }
+        ...data,
+      };
 
       return updatedProduct;
     } catch (error) {
