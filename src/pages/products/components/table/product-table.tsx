@@ -1,15 +1,18 @@
-import { Box, Table, Tbody, Td, Th, Thead, Tr, Link, Text, HStack, IconButton, useDisclosure, Button } from "@chakra-ui/react";
 import React, { useState } from "react";
+import { Box, Table, Tbody, Td, Th, Thead, Tr, Link, Text, HStack, IconButton, useDisclosure, Button } from "@chakra-ui/react";
 import { RiDeleteBin6Line, RiPencilLine } from "react-icons/ri";
+import { AiOutlinePlus } from "react-icons/ai";
 import { DeleteModal } from "../../../../components";
-import { useProduct } from "../../../../hooks";
+import { useOrder, useProduct } from "../../../../hooks";
 import { priceFormat } from "../../../../utils";
 import { ProductTableProps } from "./";
+import { Product } from "../../products.types";
 
 export const ProductTable = ({ updateProduct, onClickName }: ProductTableProps) => {
   const [productId, setProdutId] = useState('')
   const { isOpen, onOpen, onClose } = useDisclosure()
-  const { removeIsLoading, remove, products } = useProduct()
+  const { removeIsLoading, products, remove, add } = useProduct()
+  const { order, addProduct } = useOrder()
 
   const onRemove = async () => {
     await remove(productId)
@@ -21,6 +24,17 @@ export const ProductTable = ({ updateProduct, onClickName }: ProductTableProps) 
     setProdutId(productId)
   }
 
+  const handleAddProduct = (product: Product) => {
+    addProduct(product)
+    add(product.id)
+  }
+
+  const productDisabled = (selectedProduct: Product) => {
+    if (selectedProduct.stock === 0) return true
+
+    return !!order.products.find(product => product.id === selectedProduct.id)
+  }
+
   return (
     <Box height={'70vh'} overflowY="auto">
       <Table colorScheme="blackAlpha" size="sm">
@@ -30,7 +44,7 @@ export const ProductTable = ({ updateProduct, onClickName }: ProductTableProps) 
             <Th>Marca</Th>
             <Th>Preço</Th>
             <Th>Estoque</Th>
-            <Th textAlign="center" w={'120px'}>Ações</Th>
+            <Th textAlign="center" w={'150px'}>Ações</Th>
           </Tr>
         </Thead>
         <Tbody>
@@ -66,6 +80,15 @@ export const ProductTable = ({ updateProduct, onClickName }: ProductTableProps) 
                       aria-label='Excluir Produto'
                       icon={<RiDeleteBin6Line />}
                       onClick={() => onOpenModalRemove(product.id)}
+                    />
+                    <IconButton
+                      marginInlineStart="0px"
+                      size="sm"
+                      colorScheme="green"
+                      aria-label='Adicionar Produto'
+                      icon={<AiOutlinePlus />}
+                      onClick={() => handleAddProduct(product)}
+                      isDisabled={productDisabled(product)}
                     />
                   </HStack>
                 </Td>

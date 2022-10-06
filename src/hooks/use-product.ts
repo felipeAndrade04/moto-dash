@@ -2,11 +2,13 @@ import { useToast } from "@chakra-ui/react";
 import { useEffect, useState } from "react";
 import { Product } from "../pages";
 import services from "../services";
+import { useProductStore } from "../store";
 
 export const useProduct = () => {
   const [isLoading, setIsLoading] = useState(false);
   const [removeIsLoading, setRemoveIsLoading] = useState(false);
-  const [products, setProducts] = useState<Product[]>([])
+  const products = useProductStore(state => state.products)
+  const setProducts = useProductStore(state => state.setProducts)
 
   const toast = useToast({ position: "top" });
 
@@ -87,6 +89,33 @@ export const useProduct = () => {
     }
   }
 
+  const updateProducts = async (orderProducts: Product[]) => {
+    try {
+      const updatedProductsPromise = orderProducts.map(product => services.product.update(product.id, {...product, stock: product.stock - product.quantity!}))
+
+      const response = await Promise.all(updatedProductsPromise)
+
+      const updatedProducts = products.map(product => {
+        const productIndex = response.findIndex(resp => resp.id === product.id)
+
+        if (productIndex >= 0) {
+          return response[productIndex]
+        }
+
+        return product
+      })
+
+      setProducts(updatedProducts)
+    } catch (error) {
+      const { message } = error as TypeError;
+      toast({
+        title: message,
+        status: "error",
+        isClosable: true,
+      });
+    }
+  }
+
   const remove = async (productId: string) => {
     try {
       setRemoveIsLoading(true)
@@ -113,11 +142,22 @@ export const useProduct = () => {
     }
   }
 
+  const add = async (productId: string) => {
+    const updatedProducts = products.map(product => ({
+      ...product,
+      quantity: product.id === productId ? 1 : 0
+    }))
+
+    setProducts(updatedProducts)
+  }
+
   return {
+    add,
     list, 
     create,
     update,
     remove,
+    updateProducts,
     isLoading,
     removeIsLoading,
     products

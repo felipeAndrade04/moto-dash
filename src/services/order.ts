@@ -6,6 +6,7 @@ import {
   Firestore,
   getDocs,
   query,
+  Timestamp,
 } from "firebase/firestore";
 import { Order } from "../pages";
 
@@ -36,7 +37,7 @@ const orderService = (db: Firestore) => ({
     try {
       const newOrder: Omit<Order, "id"> = {
         ...orderData,
-        created_at: new Date(),
+        created_at: Timestamp.fromDate(new Date()),
       };
 
       const docRef = await addDoc(collection(db, "order"), newOrder);

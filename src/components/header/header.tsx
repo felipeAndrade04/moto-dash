@@ -1,12 +1,12 @@
-import { 
-  Flex, 
+import {
+  Flex,
   useBreakpointValue,
-  Heading
+  Heading,
 } from '@chakra-ui/react';
 
-import { Profile, HeaderProps } from './';
+import { Profile, HeaderProps, Cart } from './';
 
-export function Header({name, email}: HeaderProps) {
+export function Header({ name, email, onCartClick }: HeaderProps) {
   const isWideVersion = useBreakpointValue({
     base: false,
     lg: true,
@@ -27,8 +27,10 @@ export function Header({name, email}: HeaderProps) {
         align="center"
         ml="auto"
       >
-        <Profile 
-          showProfileData={isWideVersion} 
+        <Cart onClick={onCartClick} />
+
+        <Profile
+          showProfileData={isWideVersion}
           name={name}
           email={email}
         />

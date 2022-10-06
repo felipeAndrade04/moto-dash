@@ -1,50 +1,57 @@
+import React, { useState } from 'react'
 import { Box, Table, Tbody, Td, Th, Thead, Tr, HStack, IconButton, useDisclosure } from '@chakra-ui/react'
-import React from 'react'
-import { RiDeleteBin6Line, RiPencilLine } from 'react-icons/ri'
-import { OrderTableProps } from '.'
+import { RiDeleteBin6Line } from 'react-icons/ri'
 import { DeleteModal } from '../../../../components'
 import { useOrder } from '../../../../hooks'
-import { priceFormat } from '../../../../utils'
+import { formatDate, priceFormat } from '../../../../utils'
+import { Product } from '../../../products'
 
 export const OrderTable = () => {
+  const [orderId, setOrderId] = useState('')
   const { isOpen, onOpen, onClose } = useDisclosure()
-  const { orders, removeIsLoading } = useOrder()
+  const { orders, removeIsLoading, remove } = useOrder()
 
-  const onRemove = () => { }
+  const onRemove = async () => {
+    await remove(orderId)
+    onClose()
+  }
+
+  const onOpenModalRemove = (orderId: string) => {
+    onOpen()
+    setOrderId(orderId)
+  }
+
+  const formatProductText = (products: Product[]) => {
+    return products.map(product => `${product.quantity} x ${product.name}`).join(', ')
+  }
 
   return (
     <Box height={'70vh'} overflowY="auto">
       <Table colorScheme="blackAlpha" size="sm">
         <Thead>
           <Tr>
+            <Th w={'150px'}>Data</Th>
             <Th>Produtos</Th>
-            <Th  w={'140px'}>Total</Th>
-            <Th textAlign="center" w={'120px'}>Ações</Th>
+            <Th w={'140px'}>Total</Th>
+            <Th textAlign="center" w={'120px'}>Remover</Th>
           </Tr>
         </Thead>
         <Tbody>
           {orders.map(order => {
             return (
               <Tr key={order.id}>
-                <Td>{JSON.stringify(order.products)}</Td>
+                <Td>{formatDate(order.created_at.toDate())}</Td>
+                <Td>{formatProductText(order.products)}</Td>
                 <Td>{priceFormat(order.totalValue)}</Td>
                 <Td>
                   <HStack justifyContent="center">
-                    <IconButton
-                      m="0"
-                      size="sm"
-                      colorScheme="blue"
-                      aria-label='Editar Produto'
-                      icon={<RiPencilLine />}
-                    // onClick={() => updateOrder(order)}
-                    />
                     <IconButton
                       marginInlineStart="0px"
                       size="sm"
                       colorScheme="red"
                       aria-label='Excluir Produto'
                       icon={<RiDeleteBin6Line />}
-                    // onClick={() => onOpenModalRemove(order.id)}
+                      onClick={() => onOpenModalRemove(order.id)}
                     />
                   </HStack>
                 </Td>
