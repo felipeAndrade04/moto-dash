@@ -9,8 +9,6 @@ import { RiMoneyDollarCircleLine, RiShoppingBag3Line } from "react-icons/ri";
 export const Dashboard = () => {
   const { graphData, isLoading, ordersQuantity, totalValue } = useDashboard()
 
-  console.log(ordersQuantity, totalValue)
-
   return (
     <PageLayout>
       <HStack>
