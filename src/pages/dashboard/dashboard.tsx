@@ -1,11 +1,16 @@
 import React from "react";
-import { Text } from "@chakra-ui/react";
 import { PageLayout } from "../../components";
+import { OrderChart } from "./";
+import { useDashboard } from "../../hooks";
 
 export const Dashboard = () => {
+  const { graphData, isLoading, ordersQuantity, totalValue } = useDashboard()
+
+  console.log(ordersQuantity, totalValue)
+
   return (
     <PageLayout>
-      <Text>Dashboard</Text>
+      <OrderChart graphData={graphData} isLoading={isLoading} />
     </PageLayout>
   )
 }
