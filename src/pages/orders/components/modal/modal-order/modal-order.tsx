@@ -7,13 +7,13 @@ import { priceFormat } from '../../../../../utils'
 import { useOrder, useProduct } from '../../../../../hooks'
 
 export const ModalOrder = ({ isOpen, onClose }: ModalOrderProps) => {
-  const { create, decrementProductQuantity, incrementProductQuantity, removeProduct,order, createIsLoading } = useOrder()
+  const { create, decrementProductQuantity, incrementProductQuantity, removeProduct, order, createIsLoading } = useOrder()
   const { updateProducts } = useProduct()
 
   const onCreate = async () => {
     try {
       await create(order)
-      await updateProducts(order.products)
+      await updateProducts(order.products, 'update')
       onClose()
     } catch { }
   }
