@@ -23,7 +23,7 @@ export const OrderChart = ({ graphData, isLoading }: OrderChatProps) => {
             Gráfico do total de vendas nos últimos 6 meses
           </Text>
           {/* @ts-ignore:next-line */}
-          <ReactApexChart options={options} series={graphData} type="bar" height={'80%'}/>
+          <ReactApexChart options={options} series={graphData} type="bar" height={'90%'}/>
         </>
       )}
     </Stack>
