@@ -5,6 +5,7 @@ import {
   doc,
   Firestore,
   getDocs,
+  orderBy,
   query,
   Timestamp,
 } from "firebase/firestore";
@@ -13,7 +14,7 @@ import { Order } from "../pages";
 const orderService = (db: Firestore) => ({
   list: async () => {
     try {
-      const orderQuery = await query(collection(db, "order"));
+      const orderQuery = await query(collection(db, "order"), orderBy("created_at", "desc"));
 
       const querySnapshot = await getDocs(orderQuery);
 
