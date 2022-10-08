@@ -1,5 +1,5 @@
 import React, { useState } from "react";
-import { Box, Table, Tbody, Td, Th, Thead, Tr, Link, Text, HStack, IconButton, useDisclosure, Button } from "@chakra-ui/react";
+import { Box, Table, Tbody, Td, Th, Thead, Tr, Link, Text, HStack, IconButton, useDisclosure } from "@chakra-ui/react";
 import { RiDeleteBin6Line, RiPencilLine } from "react-icons/ri";
 import { AiOutlinePlus } from "react-icons/ai";
 import { DeleteModal } from "../../../../components";
